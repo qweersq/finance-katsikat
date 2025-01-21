@@ -752,6 +752,7 @@ const AddExpenseModal = ({ isOpen, onClose, onSuccess }) => {
                                 <button
                                     type="submit"
                                     disabled={isLoading}
+                                    onClick={handleSubmit}
                                     className={`px-4 py-2 text-sm font-medium text-white bg-sky-600 rounded-xl hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
                                         }`}
                                 >
