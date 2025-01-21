@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import useSidebarToggle from '../hooks/useSidebarToggle';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useGeneral } from '../hooks/useGeneral';
+import { GeneralContext } from '../contexts/GeneralContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { toggle } = useSidebarToggle();
+  const { toggle } = useContext(GeneralContext);
   const [userData, setUserData] = useState(null);
   const { getProfile } = useGeneral();
 

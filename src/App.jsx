@@ -5,10 +5,11 @@ import MainLayout from './layouts/MainLayout.jsx';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login.jsx';
 import Income from './pages/Income.jsx';
-import Expenses from './pages/Expenses.jsx';
+import Expenses from './pages/Expenses/index.jsx';
 import Reports from './pages/Reports.jsx';
-import Transactions from './pages/Transactions.jsx';
+import Transactions from './pages/Transactions/index.jsx';
 import { GeneralProvider } from './contexts/GeneralContext.jsx';
+
 
 const App = () => {
   return (
@@ -24,10 +25,10 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/income" element={<Income />} />
-              <Route path="/expense" element={<Expenses />} />
-              <Route path="/reports" element={<Reports />} />
               <Route path="/transaction" element={<Transactions />} />
+              <Route path="/expense" element={<Expenses />} />
+              <Route path="/income" element={<Income />} />
+              <Route path="/reports" element={<Reports />} />
             </Route>
           </Route>
 

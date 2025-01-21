@@ -47,4 +47,4 @@ const AccountCard = ({ title, subtitle, amount, percentage, icon, trend, lastTra
   );
 };
 
-export default AccountCard; 
+export default AccountCard;

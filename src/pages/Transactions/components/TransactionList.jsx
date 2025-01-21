@@ -1,0 +1,162 @@
+import { useState, useRef, useEffect, useContext } from 'react';
+import TransactionCard from './TransactionCard';
+import { formatDate } from '../utils/transactionHelpers';
+import axios from 'axios';
+import { TransactionContext } from '../contexts/TransactionContext';
+import { useTransactions } from '../hooks/useTransactions';
+
+const TransactionList = () => {
+    const { transactions, isLoading, changePage, filters, reloadTransactions } = useContext(TransactionContext);
+    const [visibleTransactions, setVisibleTransactions] = useState([]);
+    const [lastVisibleRowKey, setLastVisibleRowKey] = useState(null);
+    const observer = useRef(null);
+    const lastRowRef = useRef(null); // Ref untuk row terakhir
+
+    // Initial load
+    useEffect(() => {
+        if (transactions.length > 0) {
+            const initialBatch = transactions.slice(0,50);
+            setVisibleTransactions(initialBatch);
+            if (initialBatch.length > 0) {
+                setLastVisibleRowKey(initialBatch[initialBatch.length - 1].id);
+            }
+        }
+    }, [transactions]);
+
+    // Load more data
+    const loadMoreData = () => {
+        const currentLength = visibleTransactions.length;
+        if (currentLength >= transactions.length) return; // Stop if all data is loaded
+
+        const nextBatch = transactions.slice(currentLength, currentLength + 50);
+        if (nextBatch.length > 0) {
+            setVisibleTransactions(prev => [...prev, ...nextBatch]);
+            setLastVisibleRowKey(nextBatch[nextBatch.length - 1].id);
+        }
+    };
+
+    // Setup intersection observer for the last row
+    useEffect(() => {
+        const currentLastRow = lastRowRef.current;
+        if (!currentLastRow) return;
+
+        observer.current = new IntersectionObserver(
+            (entries) => {
+                const first = entries[0];
+                if (first.isIntersecting) {
+                    console.log('Loading more data...', lastVisibleRowKey);
+                    loadMoreData();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.current.observe(currentLastRow);
+
+        return () => {
+            if (observer.current && currentLastRow) {
+                observer.current.disconnect();
+            }
+        };
+    }, [lastVisibleRowKey, visibleTransactions]);
+
+    // Row component with ref for last item
+    const TableRow = ({ transaction, isLast }) => (
+        <tr 
+            ref={isLast ? lastRowRef : null}
+            key={transaction.id} 
+            className="hover:bg-gray-50"
+        >
+            <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-900">{transaction.description}</div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-500">{transaction.category}</div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-500">
+                    {new Date(transaction.date).toLocaleDateString()}
+                </div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-right">
+                <div className="text-sm text-gray-900">
+                {transaction.type === 'expense' ? '- Rp ' + transaction.amount.toLocaleString('id-ID') : 'Rp ' + transaction.amount.toLocaleString('id-ID')}
+                </div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-right">
+                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                    ${transaction.status === 'completed' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-yellow-100 text-yellow-800'
+                    }`}
+                >
+                    {transaction.status}
+                </span>
+            </td>
+        </tr>
+    );
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-500"></div>
+            </div>
+        );
+    }
+
+    if (!transactions.length) {
+        return (
+            <div className="bg-white rounded-xl shadow-sm p-8 text-center">
+                <div className="text-gray-500">No transactions found</div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="space-y-4">
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Description
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Category
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Date
+                                </th>
+                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Amount
+                                </th>
+                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {visibleTransactions.map((transaction, index) => (
+                                <TableRow 
+                                    key={transaction.id}
+                                    transaction={transaction}
+                                    isLast={index === visibleTransactions.length - 1}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Loading indicator */}
+                {visibleTransactions.length < transactions.length && (
+                    <div className="p-4 text-center text-gray-500">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-500 mx-auto"></div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default TransactionList;

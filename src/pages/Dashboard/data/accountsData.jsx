@@ -5,7 +5,7 @@ export const accountsData = [
     subtitle: 'Main Account',
     amount: 'Rp 35.000.000',
     rawAmount: 35000000,
-    percentage: '+2.5%',
+    percentage: '+2.5%', // calculate + percentage from yesterday balance
     trend: 'up',
     lastTransaction: '2 hours ago',
     icon: (

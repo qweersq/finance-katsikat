@@ -1,11 +1,13 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { fetchData } from '../services/api';
+import useSidebarToggle from '../hooks/useSidebarToggle';
 
 const GeneralContext = createContext();
 
 function GeneralProvider({ children }) {
     const [getProfile, setGetProfile] = useState(null);
     const [loading, setLoading] = useState(false);
+    const { toggle, isOpen, close } = useSidebarToggle();
 
     useEffect(() => {
         const fetchAllData = async () => {
@@ -28,7 +30,10 @@ function GeneralProvider({ children }) {
 
     const value = {
         getProfile,
-        loading
+        loading,
+        toggle,
+        isOpen,
+        close
     };
 
     return (

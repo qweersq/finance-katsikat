@@ -33,7 +33,7 @@ instance.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       setAuthToken(null); // Remove invalid token
-      window.location.href = '/login'; // Redirect to login page
+      // window.location.href = '/login'; // Redirect to login page
     }
     return Promise.reject(error);
   }
