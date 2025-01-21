@@ -6,6 +6,7 @@ const GeneralContext = createContext();
 
 function GeneralProvider({ children }) {
     const [getProfile, setGetProfile] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(false);
     const { toggle, isOpen, close } = useSidebarToggle();
 
@@ -18,6 +19,9 @@ function GeneralProvider({ children }) {
                 ]);
 
                 setGetProfile(userResponse.data.data.user);
+                if(userResponse.data.data.user.role === 'superadmin'){
+                    setIsAuthenticated(true);
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             } finally {
@@ -31,6 +35,7 @@ function GeneralProvider({ children }) {
     const value = {
         getProfile,
         loading,
+        isAuthenticated,
         toggle,
         isOpen,
         close

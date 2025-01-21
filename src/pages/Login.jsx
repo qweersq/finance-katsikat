@@ -14,6 +14,11 @@ const Login = () => {
       const response = await postData('/login', { email, password });
       const { token } = response.data.data;
 
+      if(response.data.data.userCheck.role !== 'superadmin'){
+        setError('You are not authorized to access this page');
+        return;
+      }
+
       setAuthToken(token); // Save token and set it in headers
       navigate('/'); // Redirect to dashboard
     } catch (err) {

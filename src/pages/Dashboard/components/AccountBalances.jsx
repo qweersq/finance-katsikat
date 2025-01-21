@@ -3,12 +3,15 @@ import { useContext, useEffect, useState } from 'react';
 import { DashboardContext } from '../contexts/DashboardContext';
 import AddIncomeModal from './AddIncomeModal';
 import AddExpenseModal from './AddExpenseModal';
+import { useNavigate } from 'react-router-dom';
 
 const AccountBalances = () => {
   const { accounts: hookAccounts, isLoading } = useContext(DashboardContext);
   const [accountsData, setAccountsData] = useState(null);
   const [isAddIncomeModalOpen, setIsAddIncomeModalOpen] = useState(false);
   const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false);
+  const navigate = useNavigate();
+
   useEffect(() => {
     setAccountsData(hookAccounts);
   }, [hookAccounts]);
@@ -79,22 +82,35 @@ const AccountBalances = () => {
               onClose={() => setIsAddIncomeModalOpen(false)}
               onSuccess={handleAddIncomeSuccess}
             />
-            <button 
-        onClick={() => setIsAddExpenseModalOpen(true)}
-        className="w-full sm:w-auto bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2"
-      >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-        <span>Add Expense</span>
-      </button>
+            <button
+              onClick={() => setIsAddExpenseModalOpen(true)}
+              className="w-full sm:w-auto bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <span>Add Expense</span>
+            </button>
 
-      <AddExpenseModal
-        isOpen={isAddExpenseModalOpen}
-        onClose={() => setIsAddExpenseModalOpen(false)}
-        onSuccess={handleAddExpenseSuccess}
-      />
+            <AddExpenseModal
+              isOpen={isAddExpenseModalOpen}
+              onClose={() => setIsAddExpenseModalOpen(false)}
+              onSuccess={handleAddExpenseSuccess}
+            />
+
+          
           </div>
+            {/* see transaction */}
+            <div className="flex justify-center px-6">
+            <button className="w-full sm:w-auto bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2"
+              onClick={() => navigate('/transaction')}
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <span>See Transaction</span>
+            </button>
+            </div>
         </div>
 
         {/* Cards Grid */}

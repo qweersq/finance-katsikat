@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import useSidebarToggle from '../hooks/useSidebarToggle';
@@ -10,7 +10,7 @@ const MainLayout = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
-      
+
       {/* Overlay untuk mobile */}
       {isOpen && (
         <div
