@@ -2,10 +2,10 @@ import { useState, useEffect, useContext } from 'react';
 import TransactionHeader from './components/TransactionHeader';
 import TransactionSummary from './components/TransactionSummary';
 import TransactionList from './components/TransactionList';
-import TransactionFilters from './components/TransactionFilters';
 import AddTransactionModal from './components/AddTransactionModal';
 import { useGeneral } from '../../hooks/useGeneral';
-import { TransactionContext, TransactionProvider } from './contexts/TransactionContext';
+import { TransactionProvider } from './contexts/TransactionContext';
+import TransactionFilters from './components/TransactionFilters';
 
 const Transactions = () => {
     // State Management
@@ -46,6 +46,7 @@ const Transactions = () => {
     return (
         <TransactionProvider>
             <div className="space-y-6">
+                
                 {/* Header Section */}
                 <TransactionHeader
                     onAddNew={() => setIsAddModalOpen(true)}
