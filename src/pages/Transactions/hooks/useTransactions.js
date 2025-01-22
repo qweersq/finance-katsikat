@@ -18,8 +18,8 @@ export const useTransactions = () => {
         category: 'all', // filter by category id
         type: 'all', // filter by type credit or debit (income or expense)
         dateRange: {
-            startDate: moment().subtract(1, 'month').toDate(),
-            endDate: moment().toDate() // filter by end date
+            startDate: moment().startOf('month').toDate(),
+            endDate: moment().endOf('month').toDate()
         },
         limit: 10,
         page: 1
@@ -83,6 +83,7 @@ export const useTransactions = () => {
 
             if (response.data.success) {
                 // Refresh the list after updating
+                fetchTransactions(1);
                 return response.data.data;
             } else {
                 throw new Error(response.data.message || 'Failed to update transaction');
