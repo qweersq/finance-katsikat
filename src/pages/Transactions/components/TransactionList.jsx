@@ -4,6 +4,7 @@ import { formatDate } from '../utils/transactionHelpers';
 import axios from 'axios';
 import { TransactionContext } from '../contexts/TransactionContext';
 import { useTransactions } from '../hooks/useTransactions';
+import moment from 'moment';
 
 const TransactionList = () => {
     const { transactions, isLoading, updateTransaction } = useContext(TransactionContext);
@@ -136,7 +137,7 @@ const TransactionList = () => {
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-500">
-                    {new Date(transaction.date).toLocaleDateString()}
+                    {moment(transaction.date).format('DD MMMM YYYY HH:mm')}
                 </div>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-right">
