@@ -137,7 +137,7 @@ const TransactionList = () => {
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-500">
-                    {moment(transaction.date).format('DD MMMM YYYY HH:mm')}
+                    {moment(transaction.createdAt).format('DD MMMM YYYY HH:mm')}
                 </div>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-right">
