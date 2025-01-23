@@ -24,11 +24,12 @@ function GeneralProvider({ children }) {
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
+                setIsAuthenticated(false);
             } finally {
                 setLoading(false);
             }
         };
-
+        
         fetchAllData();
     }, []);
 
@@ -36,6 +37,7 @@ function GeneralProvider({ children }) {
         getProfile,
         loading,
         isAuthenticated,
+        setIsAuthenticated,
         toggle,
         isOpen,
         close

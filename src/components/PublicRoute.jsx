@@ -1,9 +1,9 @@
-import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import { useGeneral } from '../hooks/useGeneral';
 
 const PublicRoute = () => {
-  const token = localStorage.getItem('token'); // Check if the token exists
-  return token ? <Navigate to="/" replace /> : <Outlet />;
+  const { isAuthenticated } = useGeneral();
+  return isAuthenticated ? <Navigate to="/" replace /> : <Outlet />;
 };
 
 export default PublicRoute;

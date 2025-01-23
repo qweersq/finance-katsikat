@@ -1,26 +1,33 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postData, setAuthToken } from '../services/api';
+import { useGeneral } from '../hooks/useGeneral';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useGeneral();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await postData('/login', { email, password });
-      const { token } = response.data.data;
-
-      if(response.data.data.userCheck.role !== 'superadmin'){
-        setError('You are not authorized to access this page');
-        return;
-      }
-
-      setAuthToken(token); // Save token and set it in headers
-      navigate('/'); // Redirect to dashboard
+      await postData('/login', { email, password })
+        .then((response) => {
+          const { token } = response.data.data;
+          
+          if (response.data.data.userCheck.role !== 'superadmin') {
+            setError('You are not authorized to access this page');
+            return;
+          }
+          setAuthToken(token); // Save token and set it in headers
+          setIsAuthenticated(true);
+          navigate('/');
+        })
+        .catch((err) => {
+          setError(err.response?.data?.message || 'An error occurred. Please try again.');
+        });
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred. Please try again.');
     }
@@ -43,7 +50,7 @@ const Login = () => {
 
         <form className="bg-white p-8 rounded-2xl shadow-lg border border-sky-100" onSubmit={handleLogin}>
           {error && <p className="text-red-600 mb-4 text-sm bg-red-50 p-3 rounded">{error}</p>}
-          
+
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-medium mb-2">Email Address</label>
             <div className="relative">
@@ -72,8 +79,8 @@ const Login = () => {
             </div>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="w-full bg-gradient-to-r from-sky-400 to-sky-500 text-white px-6 py-3 rounded-lg font-medium hover:from-sky-500 hover:to-sky-600 transition-all duration-200 shadow-md hover:shadow-sky-200"
           >
             Sign In

@@ -127,12 +127,6 @@ const ExpenseList = () => {
         </div>
       </td>
 
-      {/* Actions */}
-      <td className="px-4 py-3 whitespace-nowrap text-right">
-        <button className="text-sm text-sky-600 hover:text-sky-800 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-          Edit
-        </button>
-      </td>
     </tr>
   );
 
@@ -173,9 +167,6 @@ const ExpenseList = () => {
                 </th>
                 <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Created By
-                </th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
                 </th>
               </tr>
             </thead>

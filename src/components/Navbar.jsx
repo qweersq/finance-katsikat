@@ -6,9 +6,8 @@ import { GeneralContext } from '../contexts/GeneralContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { toggle } = useContext(GeneralContext);
   const [userData, setUserData] = useState(null);
-  const { getProfile } = useGeneral();
+  const { getProfile, setIsAuthenticated, toggle } = useGeneral();
 
   useEffect(() => {
     setUserData(getProfile);
@@ -17,6 +16,7 @@ const Navbar = () => {
   const handleLogout = () => {
     // Implementasi logout
     localStorage.removeItem('token');
+    setIsAuthenticated(false);
     navigate('/login');
   };
 
