@@ -18,7 +18,7 @@ const AddExpenseModal = ({ isOpen, onClose, onSuccess }) => {
         payment_method: 'cash',
         date: new Date(),
         receipt: null,
-        status: 'pending'
+        status: 'completed'
     });
     const { financeAccounts: hookAccounts, financeCategories: hookCategories, loadDashboard } = useContext(DashboardContext);
     const [accounts, setAccounts] = useState(hookAccounts);

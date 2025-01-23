@@ -130,6 +130,9 @@ const TransactionList = () => {
 
 
             <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-900">{transaction.reference}</div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{transaction.description}</div>
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
@@ -183,6 +186,9 @@ const TransactionList = () => {
                             <tr>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[60px]">
                                     Valid
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Reference
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Description

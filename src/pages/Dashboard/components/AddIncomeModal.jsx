@@ -1,46 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { fetchData, postData } from '../../../services/api';
 import DatePicker from 'react-datepicker';
+import { DashboardContext } from '../contexts/DashboardContext';
 import "react-datepicker/dist/react-datepicker.css";
 
 const AddIncomeModal = ({ isOpen, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
-    account_id: '',
-    category_id: '',
-    amount: '',
+    account_id: '1',
+    category_id: '1',
+    amount: '0',
     total_fee: '0',
     description: '',
     date: new Date(),
   });
 
-  const [accounts, setAccounts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const { financeAccounts: hookAccounts, financeCategories: hookCategories, loadDashboard } = useContext(DashboardContext);
+  const [accounts, setAccounts] = useState(hookAccounts);
+  const [categories, setCategories] = useState(hookCategories.filter(category => category.type === 'credit'));
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchAccounts();
-    fetchCategories();
-  }, []);
-
-  const fetchAccounts = async () => {
-    try {
-      const response = await fetchData('/finance-accounts');
-      setAccounts(response?.data.data);
-    } catch (err) {
-      setError('Failed to fetch accounts');
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetchData('/finance-categories');
-      const filterCategories = response?.data.data.filter(category => category.type === 'credit');
-      setCategories(filterCategories);
-    } catch (err) {
-      setError('Failed to fetch categories');
-    }
-  };
+    setAccounts(hookAccounts);
+    setCategories(hookCategories.filter(category => category.type === 'credit'));
+  }, [hookAccounts, hookCategories]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,7 +41,16 @@ const AddIncomeModal = ({ isOpen, onClose, onSuccess }) => {
       };
 
       await postData('/finance-transactions', payload);
-      onSuccess?.();
+      // reset
+      setFormData({
+        account_id: '1',
+        category_id: '1',
+        amount: '0',
+        total_fee: '0',
+        description: '',
+        date: new Date(),
+      });
+      loadDashboard();
       onClose();
     } catch (err) {
       setError(err.message || 'Failed to add income');

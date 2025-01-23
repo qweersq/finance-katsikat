@@ -106,24 +106,27 @@ const Sidebar = () => {
             <aside
                 className={`
                     fixed md:sticky top-0 left-0 h-screen
-                    w-64 bg-white shadow-lg transform transition-transform duration-300
+                    w-64 min-w-[16rem] bg-white shadow-lg 
+                    transform transition-transform duration-300
                     md:translate-x-0 z-50 md:z-0
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-                    overflow-y-auto
                     flex flex-col
+                    border-r border-gray-200
                 `}
             >
                 {/* Logo Section - Always visible */}
-                <div className="flex-shrink-0 p-4 border-b">
+                <div className="flex-shrink-0 p-4 border-b border-gray-200">
                     <div className="flex items-center">
-                        <img className="h-14 w-14" src="https://www.katsikat.id/assets/newKatsikat-ac5e55a2.png" alt="Logo" />
-                        <span className="ml-2 text-xl font-semibold">Katsikat Finance</span>
+                        <img className="h-14 w-14 flex-shrink-0" src="https://www.katsikat.id/assets/newKatsikat-ac5e55a2.png" alt="Logo" />
+                        <span className="ml-2 text-xl font-semibold truncate">
+                            Katsikat Finance
+                        </span>
                     </div>
                 </div>
 
                 {/* Navigation Section - Scrollable */}
-                <nav className="flex-1 overflow-y-auto py-4 px-3">
-                    <div className="space-y-1">
+                <nav className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3">
+                    <div className="space-y-1 min-w-[14rem]">
                         {menuItems.map((item) => (
                             <NavItem key={item.path} {...item} />
                         ))}
@@ -131,16 +134,20 @@ const Sidebar = () => {
                 </nav>
 
                 {/* Footer Section - Always visible */}
-                <div className="flex-shrink-0 p-4 border-t">
+                <div className="flex-shrink-0 p-4 border-t border-gray-200">
                     <div className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-gray-50">
                         <img
                             src="https://ui-avatars.com/api/?name=Admin+User&background=dbeafe&color=0284c7"
                             alt="User"
-                            className="h-8 w-8 rounded-full"
+                            className="h-8 w-8 rounded-full flex-shrink-0"
                         />
-                        <div className="flex-1">
-                            <h3 className="text-sm font-medium text-gray-700">{user?.name}</h3>
-                            <p className="text-xs text-gray-500">{user?.email}</p>
+                        <div className="flex-1 min-w-0">
+                            <h3 className="text-sm font-medium text-gray-700 truncate">
+                                {user?.name}
+                            </h3>
+                            <p className="text-xs text-gray-500 truncate">
+                                {user?.email}
+                            </p>
                         </div>
                     </div>
                 </div>
