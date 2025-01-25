@@ -135,6 +135,11 @@ const TransactionList = () => {
             <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{transaction.description}</div>
             </td>
+            <td className="px-6 py-4 whitespace-nowrap text-right">
+                <div className="text-sm text-gray-900">
+                    {transaction.type === 'expense' ? '- Rp ' + transaction.amount.toLocaleString('id-ID') : 'Rp ' + transaction.amount.toLocaleString('id-ID')}
+                </div>
+            </td>
             <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-500">{transaction.category}</div>
             </td>
@@ -143,11 +148,7 @@ const TransactionList = () => {
                     {moment(transaction.createdAt).format('DD MMMM YYYY HH:mm')}
                 </div>
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-right">
-                <div className="text-sm text-gray-900">
-                    {transaction.type === 'expense' ? '- Rp ' + transaction.amount.toLocaleString('id-ID') : 'Rp ' + transaction.amount.toLocaleString('id-ID')}
-                </div>
-            </td>
+       
             <td className="px-6 py-4 whitespace-nowrap text-right">
                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                     ${transaction.status === 'completed'
@@ -193,14 +194,14 @@ const TransactionList = () => {
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Description
                                 </th>
+                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Amount
+                                </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Category
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Date
-                                </th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Amount
                                 </th>
                                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Status
